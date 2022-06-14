@@ -1,0 +1,52 @@
+add_two(int8 a, int8 b) -> int16 {
+    ret a + b;
+}
+
+fun display(int8 v) -> void {
+    asm {
+        // this is where some raw assembly might go
+        //  this display function would be part of a standard library
+    }
+}
+
+fn main() -> int64 {
+    int8 val1 = 15;
+    int8 val2 = 56;
+    int16 result = add_two(val1, val2);
+    
+    ret 0;
+}
+
+
+
+; Notes
+;  R registers are general size reference
+;   r0 -r7  used for arguments, afterwards the stack is used
+;   r8      is used to hold the value of a system call
+;   r9 -r15 used for temporary values
+;   r16-r18 are to be avoided
+;   r19-r28 are generally ok to use in a program
+;  X registers are 64 bit (x0 - x30), these are technically the same registers as R just different size reference
+;  W registers are 32 bit (w0 - w30), these are technically the same registers as R just different size reference
+; 
+
+.global _start
+.align 2
+
+_start:
+    sub sp, sp, #4          ; give space for [dec8, dec8, dec16]
+    mov     w8, 15
+    strb    w8, [sp, #-1]      ; store 15 into the first local var
+    mov     w8, 56
+    strb    w8, [sp, #-2]
+    
+    ; setup call to add two
+    mov     r0, [sp, #-1]
+    mov     r1, [sp, #-2]
+    b       add_two
+    ldr     w0, [sp, #-3]
+
+add_two:
+    ldr
+    add w0, r0, r1
+    ret

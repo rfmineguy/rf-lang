@@ -1,0 +1,56 @@
+fun flipBit(int8 val, int8 bit) {
+    val[bit] = !val[bit];
+}
+
+fun testBit(int8 val, int8 bit) -> int8 {
+    ret val[bit];
+}
+
+fun main(int64 argc, ) -> int64 {
+    int8 byte = 125;
+    byte = byte >> 1;
+    byte = byte << 1;
+    
+    flipBit(byte, 0);
+
+    ret 0;
+}
+
+
+;x86_64
+section .data
+
+section .bss
+
+section .text
+global _start
+_start:
+    push rbp
+    mov rbp, rsp
+
+    sub rbp, 1          ;make room for int8 byte
+    mov BYTE [rsp-1], 125
+    
+    mov rax, BYTE [rsp-1]
+    shr rax, 1
+    mov BYTE [rsp-1], rax
+
+    mov rax, BYTE [rsp-1]
+    shl rax, 1
+    mov BYTE [rsp-1], rax
+
+    push BYTE [rsp-1]
+    push 0
+    call flipBit
+
+    mov rsp, rbp
+    pop rbp
+
+flipBit:
+    push rbp
+    mov rbp, rsp
+
+    
+
+    mov rsp, rbp
+    pop rbp
