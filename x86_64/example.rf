@@ -1,0 +1,7 @@
+fun main() -> int64 {
+    int8 byte = 4;
+    int16 word = 9842;
+    int32 dword = 5213424;
+    int64 qword = 864278613;
+    ret qword;
+}
