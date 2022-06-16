@@ -1,0 +1,9 @@
+fun add(byte a, byte b) -> word {
+    word result = a + b;
+    ret result;
+}
+
+fun mul(byte a, byte b) -> word {
+    word result = a * b;
+    ret result;
+}

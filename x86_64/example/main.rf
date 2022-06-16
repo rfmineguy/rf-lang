@@ -1,0 +1,35 @@
+// NOTE :this line will compile the stdlib.rf into an object file and just link it to the final executable
+include "stdlib.rf"
+
+// include math lib
+include "math.rf"
+include "string.rf"
+
+fun main(int args, byte[][] argv) -> qword {
+    byte b = 4;
+    byte b2 = 0b10011011;
+    word w = 9842;
+    dword d = 5213424;
+    qword q = 0x8642786;
+    byte str[] = "Hello world\n"; //string literal
+    str[0] = 'x';
+    str[1] = 'o';
+
+    word len = strlen(str);
+    byte str2[] = "Boogers are good\n"; //string literal
+    len = strlen(str2);
+    printString(str2);
+
+    word arr[6] = [0, 3, 2, 5, 7, 8];
+
+    if (len > 4) {
+        word result = add(9, 4);
+    }
+    else {
+        word result = mul(8, 0x42);
+    }
+
+    word result = add(b, b);
+    result = mul(b, b);
+    ret q;
+}

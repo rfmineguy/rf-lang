@@ -1,0 +1,12 @@
+// calculates the length of a null terminated string
+// WARN: if its not null terminated the program gets stuck
+fun strlen(byte str[]) -> word {
+    word len = 0;
+    while (str[len] != 0) {
+        len++;
+    }
+    ret len;
+}
+
+//not sure how to implement this in rf-lang
+extern fun printString(byte str[]) -> void;

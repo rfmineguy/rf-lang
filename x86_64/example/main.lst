@@ -1,0 +1,250 @@
+     1                                 %line 1+1 math.asm
+     2                                 [global fun_add_a_b__word]
+     3                                 fun_add_a_b__word:
+     4 00000000 55                      push rbp
+     5 00000001 4889E5                  mov rbp, rsp
+     6 00000004 4883EC02                sub rsp, 2
+     7                                 
+     8 00000008 48C7C000000000          mov rax, 0
+     9 0000000F 488B4508                mov rax, [rbp + 8]
+    10 00000013 48034510                add rax, qword [rbp + 16]
+    11 00000017 66894424FE              mov word [rsp-2], ax
+    12                                 
+    13 0000001C 4889EC                  mov rsp, rbp
+    14 0000001F 5D                      pop rbp
+    15 00000020 C21000                  ret 16
+    16                                 
+    17                                 [global fun_mul_a_b__word]
+    18                                 fun_mul_a_b__word:
+    19 00000023 55                      push rbp
+    20 00000024 4889E5                  mov rbp, rsp
+    21 00000027 4883EC02                sub rsp, 2
+    22                                 
+    23 0000002B 4831C0                  xor rax, rax
+    24 0000002E 4831DB                  xor rbx, rbx
+    25 00000031 488B4510                mov rax, QWORD [rbp + 16]
+    26 00000035 488B5D18                mov rbx, QWORD [rbp + 24]
+    27 00000039 0FAFC3                  imul eax, ebx
+    28 0000003C 66894424FE              mov word [rsp-2], ax
+    29                                 
+    30 00000041 4889EC                  mov rsp, rbp
+    31 00000044 5D                      pop rbp
+    32 00000045 C21000                  ret 16
+    33                                 %line 1+1 string.asm
+    34                                 
+    35                                 
+    36                                 fun_strlen_str__word:
+    37 00000048 55                      push rbp
+    38 00000049 4889E5                  mov rbp, rsp
+    39 0000004C 4883EC02                sub rsp, 2
+    40 00000050 66C74424FE0000          mov word [rsp - 2], 0
+    41 00000057 488B7D10                mov rdi, qword [rbp + 16]
+    42                                 
+    43                                  while_:
+    44 0000005B 803F00                  cmp byte [rdi], 0
+    45 0000005E 7408                    je end_while_
+    46 00000060 48FFC7                  inc rdi
+    47 00000063 66FF4424FE              inc word [rsp - 2]
+    48 00000068 EBEF                    jmp while_
+    49                                  end_while_:
+    50                                 
+    51 0000006A 48C7C000000000          mov rax, 0
+    52 00000071 668B4424FE              mov ax, word [rsp - 2]
+    53                                 
+    54 00000076 4889EC                  mov rsp, rbp
+    55 00000079 5D                      pop rbp
+    56 0000007A C20800                  ret 8
+    57                                 
+    58                                 
+    59                                 
+    60                                 fun_printString_str__void:
+    61 0000007D 55                      push rbp
+    62 0000007E 4889E5                  mov rbp, rsp
+    63 00000081 4883EC02                sub rsp, 2
+    64 00000085 66C74424FE0000          mov word [rsp-2], 0
+    65 0000008C 488B7D10                mov qword rdi, [rbp + 16]
+    66                                 
+    67 00000090 57                      push rdi
+    68 00000091 E8ADFFFFFF              call fun_strlen_str__word
+    69                                 
+    70 00000096 4889C2                  mov rdx, rax
+    71 00000099 488B7510                mov rsi, [rbp + 16]
+    72 0000009D 48C7C001000000          mov rax, 1
+    73 000000A4 48C7C701000000          mov rdi, 1
+    74 000000AB 0F05                    syscall
+    75                                 
+    76 000000AD 4889EC                  mov rsp, rbp
+    77 000000B0 5D                      pop rbp
+    78 000000B1 C20800                  ret 8
+    79                                 %line 3+1 main.asm
+    80                                 
+    81                                 [section .data]
+    82 00000000 48656C6C6F20576F72-     c_array_0: db "Hello World", 0a
+    83 00000000 6C640A00           
+    84 0000000D 426F6F676572732061-     c_array_1: db "Boogers are good", 0a
+    85 0000000D 726520676F6F640A00 
+    86                                 
+    87                                 [section .bss]
+    88                                 
+    89                                 [section .text]
+    90                                 [global _start]
+    91                                 _start:
+    92 000000B4 55                      push rbp
+    93 000000B5 4889E5                  mov rbp, rsp
+    94 000000B8 4883EC40                sub rsp, 64
+    95                                 
+    96 000000BC C645FF04                mov byte [rbp - 1], 4
+    97 000000C0 66C745FD7226            mov word [rbp - 3], 9842
+    98 000000C6 C745F9F08C4F00          mov dword [rbp - 7], 5213424
+    99 000000CD 48C745F186276408        mov qword [rbp - 15], 0x8642786
+   100 000000D5 48C745E9[00000000]      mov qword [rbp - 23], c_array_0
+   101 000000DD C60425[00000000]78      mov byte [c_array_0], 'x'
+   102 000000E5 C60425[01000000]6F      mov byte [c_array_0 + 1], 'o'
+   103                                 
+   104 000000ED 48B8[00000000000000-     mov rax, qword c_array_0
+   105 000000ED 00]                
+   106 000000F7 50                      push rax
+   107 000000F8 E846FFFFFF              call fun_strlen_str__word
+   108 000000FD 668945E7                mov word [rbp - 25], ax
+   109                                 
+   110 00000101 48C745DF[00000000]      mov qword [rbp - 33], c_array_1
+   111 00000109 48B8[00000000000000-     mov rax, qword c_array_1
+   112 00000109 00]                
+   113 00000113 50                      push rax
+   114 00000114 E82AFFFFFF              call fun_strlen_str__word
+   115 00000119 668945E7                mov word [rbp - 25], ax
+   116                                 
+   117 0000011D 48C7C0[00000000]        mov rax, c_array_1
+   118 00000124 50                      push rax
+   119 00000125 E84EFFFFFF              call fun_printString_str__void
+   120                                 
+   121                                 
+   122                                 
+   123                                 
+   124                                 
+   125 0000012A 66C745DD0000            mov word [rbp - 35], 0
+   126 00000130 66C745DB0300            mov word [rbp - 37], 3
+   127 00000136 66C745D90200            mov word [rbp - 39], 2
+   128 0000013C 66C745D70500            mov word [rbp - 41], 5
+   129 00000142 66C745D50700            mov word [rbp - 43], 7
+   130 00000148 66C745D30800            mov word [rbp - 45], 8
+   131                                 
+   132                                 if_0:
+   133 0000014E 66837DE704              cmp word [rbp - 25], 4
+   134 00000153 7C19                    jl else_0
+   135 00000155 55                      push rbp
+   136 00000156 4889E5                  mov rbp, rsp
+   137 00000159 4883EC02                sub rsp, 2
+   138 0000015D 6A09                    push 9
+   139 0000015F 6A04                    push 4
+   140 00000161 E895FEFFFF              call fun_add_a_b__word
+   141 00000166 668945FE                mov word [rbp - 2], ax
+   142 0000016A 4889EC                  mov rsp, rbp
+   143 0000016D 5D                      pop rbp
+   144 0000016E EB17                    jmp endif_0
+   145                                 else_0:
+   146 00000170 55                      push rbp
+   147 00000171 4889E5                  mov rbp, rsp
+   148 00000174 4883EC02                sub rsp, 2
+   149 00000178 6A08                    push 8
+   150 0000017A 6A42                    push 0x42
+   151 0000017C E89DFEFFFF              call fun_mul_a_b__word
+   152 00000181 668945FE                mov word [rbp - 2], ax
+   153 00000185 4889EC                  mov rsp, rbp
+   154 00000188 5D                      pop rbp
+   155                                 endif_0:
+   156                                 
+   157 00000189 480FBE45FF              movsx rax, byte [rbp - 1]
+   158 0000018E 50                      push rax
+   159 0000018F 50                      push rax
+   160 00000190 E866FEFFFF              call fun_add_a_b__word
+   161 00000195 668945DD                mov word [rbp - 35], ax
+   162                                 
+   163 00000199 480FBE45FF              movsx rax, byte [rbp - 1]
+   164 0000019E 50                      push rax
+   165 0000019F 50                      push rax
+   166 000001A0 E879FEFFFF              call fun_mul_a_b__word
+   167 000001A5 668945D1                mov word [rbp - 47], ax
+   168                                 
+   169                                 
+   170 000001A9 48C7C03C000000          mov rax, 60
+   171 000001B0 488B7DF1                mov rdi, [rbp - 15]
+   172 000001B4 0F05                    syscall
+   173                                 
+   174 000001B6 4883C440                add rsp, 64
+   175 000001BA 4889EC                  mov rsp, rbp
+   176 000001BD 5D                      pop rbp
+   177                                 
+   178 000001BE C3                      ret
+   179                                 
+   180                                 
+   181                                 
+   182                                 
+   183                                 
+   184                                 
+   185                                 
+   186                                 
+   187                                 
+   188                                 
+   189                                 
+   190                                 
+   191                                 
+   192                                 
+   193                                 
+   194                                 
+   195                                 
+   196                                 
+   197                                 
+   198                                 
+   199                                 
+   200                                 
+   201                                 
+   202                                 
+   203                                 
+   204                                 
+   205                                 
+   206                                 
+   207                                 
+   208                                 
+   209                                 
+   210                                 
+   211                                 
+   212                                 
+   213                                 
+   214                                 
+   215                                 
+   216                                 
+   217                                 
+   218                                 
+   219                                 
+   220                                 
+   221                                 
+   222                                 
+   223                                 
+   224                                 
+   225                                 
+   226                                 
+   227                                 
+   228                                 
+   229                                 
+   230                                 
+   231                                 
+   232                                 
+   233                                 
+   234                                 
+   235                                 
+   236                                 
+   237                                 
+   238                                 
+   239                                 
+   240                                 
+   241                                 
+   242                                 
+   243                                 
+   244                                 
+   245                                 
+   246                                 
+   247                                 
+   248                                 
+   249                                 
+   250                                 
