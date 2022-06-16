@@ -1,0 +1,62 @@
+     1                                 %line 1+1 main.asm
+     2                                 [section .data]
+     3 00000000 48656C6C6F20576F72-     string: db "Hello World", 0a
+     4 00000000 6C640A00           
+     5                                  .len equ $-string
+     6                                 
+     7                                 [section .bss]
+     8                                 
+     9                                 [section .text]
+    10                                 [global _start]
+    11                                 _start:
+    12 00000000 55                      push rbp
+    13 00000001 4889E5                  mov rbp, rsp
+    14                                 
+    15 00000004 48C7C001000000          mov rax, 1
+    16 0000000B 48C7C701000000          mov rdi, 1
+    17 00000012 48C7C6[00000000]        mov rsi, string
+    18 00000019 48BA0D000000000000-     mov rdx, string.len
+    19 00000019 00                 
+    20 00000023 0F05                    syscall
+    21                                 
+    22 00000025 48C7C03C000000          mov rax, 60
+    23 0000002C 48C7C700000000          mov rdi, 0
+    24 00000033 0F05                    syscall
+    25 00000035 C3                      ret
+    26                                 
+    27                                 
+    28                                 
+    29                                 print_str:
+    30 00000036 55                      push rbp
+    31 00000037 4889E5                  mov rbp, rsp
+    32 0000003A 488B7D08                mov rdi, [rbp + 8]
+    33                                  l1:
+    34 0000003E 803F00                  cmp byte [rdi], 0
+    35 00000041 7414                    je .done
+    36                                  .print_char:
+    37 00000043 48C7C100000000          mov rcx, 0
+    38 0000004A 4889F9                  mov rcx, rdi
+    39 0000004D BA01000000              mov edx, 1
+    40 00000052 CD80                    int 80
+    41 00000054 48FFC7                  inc rdi
+    42 00000057 EBE3                    jmp l1
+    43                                  .done:
+    44                                 
+    45 00000059 4889EC                  mov rsp, rbp
+    46 0000005C 5D                      pop rbp
+    47 0000005D C20800                  ret 8
+    48                                 
+    49                                 
+    50                                 
+    51                                 
+    52                                 fun_add_a_b:
+    53 00000060 55                      push rbp
+    54 00000061 4889E5                  mov rbp, rsp
+    55                                 
+    56 00000064 48C7C000000000          mov rax, 0
+    57 0000006B 488B4508                mov rax, QWORD [rbp + 8]
+    58 0000006F 48034510                add rax, QWORD [rbp + 16]
+    59                                 
+    60 00000073 4889EC                  mov rsp, rbp
+    61 00000076 5D                      pop rbp
+    62 00000077 C20800                  ret 8

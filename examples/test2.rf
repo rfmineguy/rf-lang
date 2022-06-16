@@ -6,7 +6,7 @@ fun testBit(int8 val, int8 bit) -> int8 {
     ret val[bit];
 }
 
-fun main(int64 argc, ) -> int64 {
+fun main(int64 argc, int8** argv) -> int64 {
     int8 byte = 125;
     byte = byte >> 1;
     byte = byte << 1;
