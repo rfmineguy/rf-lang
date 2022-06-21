@@ -1,0 +1,17 @@
+[
+{
+  "directory": "/home/rfmineguy/Documents/rf-lang/x86_64/compiler/build",
+  "command": "/usr/bin/c++   -O2 -g -DNDEBUG -std=gnu++17 -o CMakeFiles/rfc.dir/src/main.cpp.o -c /home/rfmineguy/Documents/rf-lang/x86_64/compiler/src/main.cpp",
+  "file": "/home/rfmineguy/Documents/rf-lang/x86_64/compiler/src/main.cpp"
+},
+{
+  "directory": "/home/rfmineguy/Documents/rf-lang/x86_64/compiler/build",
+  "command": "/usr/bin/c++   -O2 -g -DNDEBUG -std=gnu++17 -o CMakeFiles/rfc.dir/src/lexer.cpp.o -c /home/rfmineguy/Documents/rf-lang/x86_64/compiler/src/lexer.cpp",
+  "file": "/home/rfmineguy/Documents/rf-lang/x86_64/compiler/src/lexer.cpp"
+},
+{
+  "directory": "/home/rfmineguy/Documents/rf-lang/x86_64/compiler/build",
+  "command": "/usr/bin/c++   -O2 -g -DNDEBUG -std=gnu++17 -o CMakeFiles/rfc.dir/src/parser.cpp.o -c /home/rfmineguy/Documents/rf-lang/x86_64/compiler/src/parser.cpp",
+  "file": "/home/rfmineguy/Documents/rf-lang/x86_64/compiler/src/parser.cpp"
+}
+]

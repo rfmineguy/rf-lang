@@ -1,0 +1,1 @@
+/usr/bin/c++ -O2 -g -DNDEBUG CMakeFiles/rf-compiler.dir/src/main.cpp.o CMakeFiles/rf-compiler.dir/src/lexer.cpp.o -o rf-compiler 

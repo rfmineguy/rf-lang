@@ -1,0 +1,39 @@
+fun main() -> qword {
+    byte b = 4;
+    byte str[] = "Hello World\n";
+    if (b == 5) {
+        b = 4;
+    }
+    else {
+        b = 5;
+    }
+    while (b > 0) {
+        b--;
+    }
+    b++;
+}
+
+fun add(byte a, byte b) -> word {
+    word res = a + b;
+    ret res;
+}
+
+FUNC ID LPAREN RPAREN ARROW TYPE LBRACE
+    BYTE ID ASSIGN LIT SEMIC
+    BYTE ID PTR ASSIGN STRLIT SEMIC
+    IF LPAREN ID EQ LIT RPAREN LBRACE
+        ID ASSIGN LIT SEMIC
+    RBRACE
+    ELSE LBRACE
+        ID ASSIGN LIT SEMIC
+    RBRACE
+    WHILE LPAREN ID GRT LIT RPAREN LBRACE
+        ID MINUSMINUS
+    RBRACE
+    ID PLUSPLUS
+RBRACE
+
+FUNC ID LPAREN BYTE ID COMMA BYTE ID RPAREN ARROW WORD LBRACE
+    WORD ID ASSIGN ID PLUS ID
+    RET ID
+RBRACE

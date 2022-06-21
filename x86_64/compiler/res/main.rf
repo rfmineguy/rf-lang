@@ -1,0 +1,14 @@
+fun main() -> qword {
+    add(0x94, 0b10110101);
+}
+
+fun add(byte a, byte b) -> word {
+    word result = a + b;
+    a++;
+    //this is a comment too
+    ret result;
+}
+
+fun print(byte[] str) -> void {
+    //do something byte
+}

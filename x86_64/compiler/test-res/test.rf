@@ -1,0 +1,99 @@
+include "stdlib.rf"
+
+fun add(byte a, byte b) -> word {
+    word res = a + b;
+    ret res;
+}
+
+fun main() -> qword {
+    byte b = 4;
+    byte str[] = "Hello World\n";
+
+    word result = add(5, 9);
+
+    if (b == 4) {
+        b = 3;
+    }
+    else {
+        b = 5;
+    }
+}
+
+
+======================================================
+LEXICAL ANALYSIS
+======================================================
+INCLUDE STRING_LITERAL
+
+FUNC IDENTIFIER OPEN_PAREN BYTE IDENTIFER BYTE IDENTIFIER CLOSE_PAREN ARROW WORD OPEN_BRACE
+    WORD IDENTIFIER ASSIGN VAR IDENTIFIER PLUS VAR IDENTIFIER
+    RET IDENTIFIER
+CLOSE_BRACE
+
+FUNC IDENTIFIER OPEN_PAREN CLOSE_PAREN ARROW QWORD OPEN_BRACE
+    BYTE IDENTIFIER ASSIGN LITERAL
+    BYTE PTR IDENTIFIER ASSIGN STRING_LITERAL
+    WORD IDENTIFIER ASSIGN IDENTIFIER OPEN_PAREN LITERAL LITERAL CLOSE_PAREN
+    IF OPEN_PAREN IDENTIFIER EQU LITERAL CLOSE_PAREN OPEN_BRACE
+        BYTE IDENTIFIER ASSIGN LITERAL
+    CLOSE_BRACE
+    ELSE OPEN_BRACE
+        BYTE IDENTIFIER ASSIGN LITERAL
+    CLOSE_BRACE
+CLOSE_BRACE
+
+
+======================================================
+COMPILED ASSEMBLY
+======================================================
+main:
+    push rbp                    ; OPEN_BRACE
+    mov rbp, rsp                ;
+   
+    sub rsp, 16                 ; local variable space, calculate this by counting
+
+    mov byte [rbp-1], 4         ; BYTE IDENTIFIER ASSIGN LITERAL
+    mov qword [rbp-2], litStr   ; BYTE PTR IDENTIFIER ASSIGN STRING_LITERAL
+
+                                ; OPEN_PAREN
+    push 5                      ; LITERAL
+    push 9                      ; LITERAL
+                                ; CLOSE_PAREN
+    call add_a_b__word          ; implicit call due to CLOSE_PAREN
+    mov word [rbp-4], ax        ; WORD IDENTIFIER ASSIGN ...
+
+if_0: 
+    cmp byte [rbp-1], 4
+    jne else_0
+    push rbp
+    mov rbp, rsp
+    
+    mov [rbp - 1], 3
+
+    mov rsp, rbp
+    pop rbp
+    jmp endif_0
+else_0:
+    push rbp
+    mov rbp, rsp
+    
+    mov [rbp - 1], 5
+
+    mov rsp, rbp
+    pop rbp
+    
+endif_0;
+    mov rsp, rbp            ; CLOSE_BRACE
+    pop rbp                 ;
+
+add_a_b__word:
+    push rbp
+    mov rbp, rsp
+
+    mov rsp, rbp
+    pop rbp
+
+Notes:
+    Functions :
+        - count parameters and their sizes to determine where the parameters will reside on the stack
+        - count local variables in the current scope to determine how much space we'll need

@@ -1,0 +1,1 @@
+/usr/bin/c++ -O2 -g -DNDEBUG CMakeFiles/rfc.dir/src/main.cpp.o CMakeFiles/rfc.dir/src/lexer.cpp.o CMakeFiles/rfc.dir/src/parser.cpp.o -o rfc 
