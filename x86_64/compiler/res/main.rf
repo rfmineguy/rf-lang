@@ -18,3 +18,7 @@ fun sub(byte a, byte b) -> qword {
     word res = a + b;
     ret res;
 }
+
+fun booger(qword a, byte[] str) -> void {
+    ret;
+}
