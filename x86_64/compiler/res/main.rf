@@ -1,14 +1,20 @@
 fun main() -> qword {
     add(0x94, 0b10110101);
+    print("Hello World");
+    ret 0;
 }
-
 fun add(byte a, byte b) -> word {
     word result = a + b;
     a++;
     //this is a comment too
     ret result;
 }
-
 fun print(byte[] str) -> void {
     //do something byte
+}
+
+//perform subtraction on two bytes and return them as a qword
+fun sub(byte a, byte b) -> qword {
+    word res = a + b;
+    ret res;
 }

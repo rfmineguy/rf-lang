@@ -40,7 +40,7 @@ void handleArgs(int argc, char* argv[]) {
 
     if (strcmp(argv[1], "-c") == 0 && argc == 3) {
         Lexer l(argv[2]);
-        Parser p(l.GetLexFile());
+        Parser p(l.GetLexFile(), argv[2]);
     }
 }
 

@@ -12,7 +12,6 @@ Lexer::Lexer(std::filesystem::path filepath)
     if (fileStream.fail()) {
         std::cout << "Failed to open file\n";
     }
-    printf("Parent path: %s\n", filepath.parent_path().c_str());
     
     std::string s;
     while (getline(fileStream, s)) {
@@ -22,9 +21,6 @@ Lexer::Lexer(std::filesystem::path filepath)
         fullCode.append(s + '\n');
     }
     
-    printf("\033[33m%s\n", fullCode.c_str());
-    printf("\033[39m\n");
-
     std::vector<std::pair<std::string, std::string>> vec;
     vec.push_back(std::make_pair("byte|word|dword|qword|void",   "TYPE "));
     vec.push_back(std::make_pair("\"([^\"]*)\"","SLITERAL "));
@@ -68,7 +64,7 @@ Lexer::Lexer(std::filesystem::path filepath)
             printf("\033[39m\n");
         }
     }
-    printf("%s\n", fullCode.c_str());
+    //printf("%s\n", fullCode.c_str());
     printf("Lexed source code written to %s/%s\n", filepath.parent_path().c_str(), "main.lex");
     fileStream.close();
     std::filesystem::path lexPath = filepath.replace_extension("lex");
